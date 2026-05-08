@@ -3,129 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Book an appointment with our expert doctors at MediConnect.">
-    <title>Book Appointment - MediConnect</title>
+    <meta name="description" content="Book Appointment - Patient Portal - MediConnect">
+    <title>Book Appointment - Patient Portal - MediConnect</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <!-- Header -->
-    <div id="header-placeholder"></div>
-
-    <div class="page-wrapper">
-        <div class="container">
-            <!-- Page Header -->
-            <div class="page-header">
-                <div class="badge">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                        <line x1="16" y1="2" x2="16" y2="6"/>
-                        <line x1="8" y1="2" x2="8" y2="6"/>
-                        <line x1="3" y1="10" x2="21" y2="10"/>
-                    </svg>
-                    Schedule a Visit
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar" id="patientSidebar">
+            <div class="sidebar-logo">
+                <div class="logo-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+                <span class="logo-text">Medi<span style="color:var(--primary-300);">Connect</span></span>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="sidebar-section-title">Main</div>
+                <a href="/index.html" class="sidebar-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Back to Home
+                </a>
+                <a href="/patient/dashboard.html" class="sidebar-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    Dashboard
+                </a>
+                <a href="/patient/appointments.html" class="sidebar-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    Check Appointments
+                </a>
+                <a href="/patient/appointment.html" class="sidebar-link active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                    Book Appointment
+                </a>
+                <a href="/patient/medical-history.html" class="sidebar-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    Medical History
+                </a>
+                <div class="sidebar-section-title">Account</div>
+                <a href="/patient/profile.html" class="sidebar-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    My Profile
+                </a>
+                <a href="#" class="sidebar-link" onclick="logout()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Logout
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar" id="sidebarAvatar">PT</div>
+                    <div class="sidebar-user-info">
+                        <div class="sidebar-user-name" id="sidebarName">Patient</div>
+                        <div class="sidebar-user-role">Patient</div>
+                    </div>
                 </div>
-                <h1>Book an Appointment</h1>
-                <p>Fill in your details below and we'll confirm your appointment within 24 hours.</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <button class="sidebar-toggle-btn" onclick="document.getElementById('patientSidebar').classList.toggle('open')">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+
+            <div class="dashboard-header">
+                <div>
+                    <h1 class="dashboard-title">Book Appointment</h1>
+                    <p class="dashboard-subtitle">Schedule a consultation with our expert doctors.</p>
+                </div>
             </div>
 
-            <!-- Appointment Form -->
-            <div class="form-container" id="appointmentFormContainer">
+            <div class="form-container">
                 <form id="appointmentForm">
                     <div class="form-grid">
-                        <!-- Full Name -->
                         <div class="form-group">
-                            <label class="form-label">Full Name <span class="required">*</span></label>
-                            <input type="text" class="form-input" id="patientName" name="patient_name" placeholder="John Doe" required>
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-input" id="patientName" name="patient_name" readonly style="background: var(--neutral-50);">
                         </div>
-
-                         <!-- Email -->
                         <div class="form-group">
-                            <label class="form-label">Email Address <span class="required">*</span></label>
-                            <input type="email" class="form-input" id="patientEmail" name="patient_email" placeholder="john@example.com" required>
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-input" id="patientEmail" name="patient_email" readonly style="background: var(--neutral-50);">
                         </div>
-
-                        <!-- Phone -->
                         <div class="form-group">
                             <label class="form-label">Phone Number <span class="required">*</span></label>
-                            <input type="tel" class="form-input" id="patientPhone" name="patient_phone" placeholder="+91 9876543210" pattern="^(\+91[\-\s]?)?[0-9]{10}$" title="Please enter a valid 10-digit Indian phone number, optionally starting with +91" required>
+                            <input type="tel" class="form-input" id="patientPhone" name="patient_phone" placeholder="+91 9876543210" required>
                         </div>
-
-                        <!-- Specialization -->
                         <div class="form-group">
                             <label class="form-label">Specialization <span class="required">*</span></label>
                             <select class="form-select" id="specialization" name="specialization_id" required>
                                 <option value="">Select specialization</option>
                             </select>
                         </div>
-
-                        <!-- Doctor -->
                         <div class="form-group">
-                            <label class="form-label">Doctor <span class="required">*</span></label>
+                            <label class="form-label">Select Doctor <span class="required">*</span></label>
                             <select class="form-select" id="doctor" name="doctor_id" required disabled>
-                                <option value="">Select doctor</option>
+                                <option value="">Choose specialization first</option>
                             </select>
                         </div>
-
-                        <!-- Appointment Date -->
                         <div class="form-group">
-                            <label class="form-label">Appointment Date <span class="required">*</span></label>
+                            <label class="form-label">Select Date <span class="required">*</span></label>
                             <input type="date" class="form-input" id="appointmentDate" name="appointment_date" required disabled>
                         </div>
-
-                        <!-- Time Slot -->
                         <div class="form-group">
-                            <label class="form-label">Available Slots <span class="required">*</span></label>
+                            <label class="form-label">Select Time Slot <span class="required">*</span></label>
                             <select class="form-select" id="timeSlot" name="time_slot" required disabled>
                                 <option value="">Select date first</option>
                             </select>
-                            <small id="slotStatus" style="color: var(--neutral-500); display: block; margin-top: 5px;"></small>
                         </div>
-
-                        <!-- Notes -->
-                        <div class="form-group full-width">
-                            <label class="form-label">Additional Notes</label>
-                            <textarea class="form-textarea" id="notes" name="notes" placeholder="Any specific symptoms or concerns..."></textarea>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label class="form-label">Reason for Visit / Notes</label>
+                            <textarea class="form-input" id="notes" name="notes" rows="3" placeholder="Describe your symptoms or reason for visit..."></textarea>
                         </div>
                     </div>
-
-                    <!-- Submit Button -->
                     <div style="margin-top: var(--space-8);">
-                        <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitAppointmentBtn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                                <polyline points="22 4 12 14.01 9 11.01"/>
-                            </svg>
-                            Book Appointment
-                        </button>
+                        <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Confirm Appointment</button>
                     </div>
                 </form>
             </div>
 
-            <!-- Success Message (hidden by default) -->
-            <div class="form-container hidden" id="successMessage" style="text-align: center; padding: var(--space-16);">
-                <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--success-100); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-6);">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                        <polyline points="22 4 12 14.01 9 11.01"/>
-                    </svg>
+            <!-- Success Section -->
+            <div id="successMessage" class="hidden" style="text-align: center; padding: var(--space-12);">
+                <div style="width: 80px; height: 80px; background: var(--success-50); color: var(--success-600); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-6);">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
                 </div>
-                <h2 style="color: var(--neutral-900); margin-bottom: var(--space-3);">Appointment Booked!</h2>
-                <p style="color: var(--neutral-500); margin-bottom: var(--space-2);">Your appointment has been submitted successfully.</p>
-                <p style="color: var(--neutral-700); font-weight: 600; margin-bottom: var(--space-2);">Appointment Number:</p>
-                <p id="appointmentNumber" style="font-size: 1.5rem; font-weight: 800; color: var(--primary-600); margin-bottom: var(--space-8);"></p>
-                <p style="color: var(--neutral-500); font-size: 0.9rem; margin-bottom: var(--space-6);">Please save this number to check your appointment status.</p>
-                <div style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
-                    <a href="/patient/check-status.html" class="btn btn-primary">Check Status</a>
-                    <button class="btn btn-secondary" onclick="resetForm()">Book Another</button>
+                <h2 style="font-size: 1.8rem; margin-bottom: var(--space-2);">Appointment Requested!</h2>
+                <p style="color: var(--neutral-500); margin-bottom: var(--space-8);">Your appointment number is <strong id="aptNum" style="color: var(--neutral-900);"></strong>. We will notify you via email once the doctor approves it.</p>
+                <div style="display: flex; gap: var(--space-4); justify-content: center;">
+                    <a href="/patient/appointments.html" class="btn btn-secondary">View My Appointments</a>
+                    <a href="/patient/dashboard.html" class="btn btn-primary">Go to Dashboard</a>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 
-    <!-- Footer -->
-    <div id="footer-placeholder"></div>
-
     <script src="/script.js"></script>
-    <script src="/patient/patient.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = getUser();
+            if (!user || user.role !== 'patient') {
+                window.location.href = '/patient/login.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
+                return;
+            }
+            
+            // Set User Info
+            document.getElementById('sidebarName').textContent = user.full_name;
+            document.getElementById('sidebarAvatar').textContent = getInitials(user.full_name);
+            document.getElementById('patientName').value = user.full_name;
+            document.getElementById('patientEmail').value = user.email;
+            document.getElementById('patientPhone').value = user.phone || '';
+            
+            initDashboardSidebar();
+            initAppointmentForm();
+        });
+
+        async function initAppointmentForm() {
+            const specSelect = document.getElementById('specialization');
+            const doctorSelect = document.getElementById('doctor');
+            const dateInput = document.getElementById('appointmentDate');
+            const timeSelect = document.getElementById('timeSlot');
+            const form = document.getElementById('appointmentForm');
+
+            // Set min date to today
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.min = today;
+
+            try {
+                const data = await apiGet('/specializations');
+                data.specializations.forEach(s => {
+                    specSelect.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+                });
+
+                // Check for URL params
+                const urlParams = new URLSearchParams(window.location.search);
+                const specId = urlParams.get('spec');
+                if (specId) {
+                    specSelect.value = specId;
+                    specSelect.dispatchEvent(new Event('change'));
+                }
+            } catch (e) {}
+
+            specSelect.onchange = async () => {
+                const specId = specSelect.value;
+                doctorSelect.innerHTML = '<option value="">Loading doctors...</option>';
+                doctorSelect.disabled = true;
+                dateInput.disabled = true;
+                timeSelect.disabled = true;
+
+                if (!specId) {
+                    doctorSelect.innerHTML = '<option value="">Choose specialization first</option>';
+                    return;
+                }
+
+                try {
+                    const data = await apiGet(`/doctors?specialization_id=${specId}`);
+                    doctorSelect.innerHTML = '<option value="">Select a doctor</option>';
+                    data.doctors.forEach(d => {
+                        doctorSelect.innerHTML += `<option value="${d.id}">Dr. ${d.full_name}</option>`;
+                    });
+                    doctorSelect.disabled = false;
+                } catch (e) {
+                    doctorSelect.innerHTML = '<option value="">Failed to load doctors</option>';
+                }
+            };
+
+            doctorSelect.onchange = () => {
+                dateInput.disabled = !doctorSelect.value;
+                if (!doctorSelect.value) dateInput.value = '';
+                timeSelect.disabled = true;
+            };
+
+            dateInput.onchange = async () => {
+                const docId = doctorSelect.value;
+                const date = dateInput.value;
+                if (!docId || !date) return;
+
+                timeSelect.innerHTML = '<option value="">Loading slots...</option>';
+                timeSelect.disabled = true;
+
+                try {
+                    const data = await apiGet(`/doctors/${docId}/slots?date=${date}`);
+                    timeSelect.innerHTML = '<option value="">Select a time slot</option>';
+                    if (data.slots && data.slots.length > 0) {
+                        data.slots.forEach(slot => {
+                            timeSelect.innerHTML += `<option value="${slot}">${slot}</option>`;
+                        });
+                        timeSelect.disabled = false;
+                    } else {
+                        timeSelect.innerHTML = '<option value="">No slots available</option>';
+                    }
+                } catch (e) {
+                    timeSelect.innerHTML = '<option value="">Error loading slots</option>';
+                }
+            };
+
+            form.onsubmit = async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('submitBtn');
+                btn.disabled = true;
+                btn.textContent = 'Booking...';
+
+                const formData = new FormData(form);
+                const payload = Object.fromEntries(formData.entries());
+                
+                // Add patient ID from local storage
+                const user = getUser();
+                payload.patient_id = user.id;
+
+                try {
+                    const data = await apiPost('/appointments', payload);
+                    document.getElementById('appointmentForm').classList.add('hidden');
+                    document.getElementById('successMessage').classList.remove('hidden');
+                    document.getElementById('aptNum').textContent = data.appointmentNumber;
+                    showToast('Appointment booked successfully!', 'success');
+                } catch (error) {
+                    showToast(error.message || 'Failed to book appointment', 'error');
+                    btn.disabled = false;
+                    btn.textContent = 'Confirm Appointment';
+                }
+            };
+        }
+    </script>
 </body>
 </html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Patient Portal - MediConnect</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="dashboard-sidebar" id="patientSidebar">
+        <div class="sidebar-logo"><div class="logo-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div><span class="logo-text">Medi<span style="color:var(--primary-300);">Connect</span></span></div>
+        <nav class="sidebar-nav">
+            <div class="sidebar-section-title">Main</div>
+            <a href="/index.html" class="sidebar-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Back to Home</a>
+            <a href="/patient/dashboard.html" class="sidebar-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</a>
+            <a href="/patient/appointments.html" class="sidebar-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Check Appointments</a>
+            <a href="/patient/appointment.html" class="sidebar-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Book Appointment</a>
+            <a href="/patient/medical-history.html" class="sidebar-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Medical History</a>
+            <div class="sidebar-section-title">Account</div>
+            <a href="/patient/profile.html" class="sidebar-link active"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Profile</a>
+            <a href="#" class="sidebar-link" onclick="logout()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a>
+        </nav>
+        <div class="sidebar-footer"><div class="sidebar-user"><div class="sidebar-user-avatar" id="sidebarAvatar">PT</div><div class="sidebar-user-info"><div class="sidebar-user-name" id="sidebarName">Patient</div><div class="sidebar-user-role">Patient</div></div></div></div>
+    </aside>
+
+    <main class="dashboard-main">
+        <button class="sidebar-toggle-btn" onclick="document.getElementById('patientSidebar').classList.toggle('open')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div class="dashboard-header"><div><h1 class="dashboard-title">My Profile</h1><p class="dashboard-subtitle">View and update your personal information.</p></div></div>
+
+        <div class="card" style="padding: var(--space-8); max-width: 600px;">
+            <div style="display:flex; align-items:center; gap: var(--space-6); margin-bottom: var(--space-8);">
+                <div style="width:80px;height:80px; border-radius:50%; background: linear-gradient(135deg, var(--primary-500), var(--primary-700)); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                    <span id="profileAvatar" style="font-size:2rem; font-weight:700; color:white;">PT</span>
+                </div>
+                <div>
+                    <h2 id="profileName" style="font-size:1.3rem; font-weight:700; color:var(--neutral-800);">Loading...</h2>
+                    <p id="profileEmail" style="color:var(--neutral-500); font-size:0.9rem; margin-top:var(--space-1);"></p>
+                    <span style="background:var(--primary-100); color:var(--primary-700); padding:2px 10px; border-radius:20px; font-size:0.75rem; font-weight:600;">✓ Verified Patient</span>
+                </div>
+            </div>
+
+            <form id="profileForm" onsubmit="handleUpdateProfile(event)">
+                <div class="form-grid" style="grid-template-columns:1fr 1fr;">
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" id="pName" class="form-input" required>
+                    </div>
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" id="pPhone" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Gender</label>
+                        <select id="pGender" class="form-select">
+                            <option value="">Select</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Blood Group</label>
+                        <select id="pBlood" class="form-select">
+                            <option value="">Select</option>
+                            <option value="A+">A+</option><option value="A-">A-</option>
+                            <option value="B+">B+</option><option value="B-">B-</option>
+                            <option value="O+">O+</option><option value="O-">O-</option>
+                            <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="grid-column:1/-1; margin-top: var(--space-2);">
+                        <button type="submit" id="saveBtn" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+
+<script src="/script.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const user = getUser();
+        if (!user || user.role !== 'patient') { window.location.href = '/patient/login.html'; return; }
+        document.getElementById('sidebarName').textContent = user.full_name;
+        document.getElementById('sidebarAvatar').textContent = getInitials(user.full_name);
+        initDashboardSidebar();
+        loadProfile();
+    });
+
+    async function loadProfile() {
+        const token = localStorage.getItem('token');
+        try {
+            const res = await fetch('/api/patients/profile', { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            const p = data.patient;
+            document.getElementById('profileName').textContent = p.full_name;
+            document.getElementById('profileEmail').textContent = p.email;
+            document.getElementById('profileAvatar').textContent = getInitials(p.full_name);
+            document.getElementById('pName').value = p.full_name;
+            document.getElementById('pPhone').value = p.phone || '';
+            document.getElementById('pGender').value = p.gender || '';
+            document.getElementById('pBlood').value = p.blood_group || '';
+        } catch (e) { showToast('Failed to load profile', 'error'); }
+    }
+
+    async function handleUpdateProfile(e) {
+        e.preventDefault();
+        const btn = document.getElementById('saveBtn');
+        btn.disabled = true; btn.textContent = 'Saving...';
+        const token = localStorage.getItem('token');
+        try {
+            const res = await fetch('/api/patients/profile', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({
+                    full_name: document.getElementById('pName').value,
+                    phone: document.getElementById('pPhone').value,
+                    gender: document.getElementById('pGender').value,
+                    blood_group: document.getElementById('pBlood').value
+                })
+            });
+            if (res.ok) {
+                showToast('Profile updated successfully!', 'success');
+                loadProfile();
+            } else {
+                showToast('Failed to update profile', 'error');
+            }
+        } catch (e) { showToast('Connection error', 'error'); }
+        finally { btn.disabled = false; btn.textContent = 'Save Changes'; }
+    }
+</script>
+</body>
+</html>

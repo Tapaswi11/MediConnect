@@ -6,6 +6,49 @@
 const API_BASE = '/api';
 
 // ============================================
+// Book Appointment - Requires Patient Login
+// ============================================
+function bookAppointmentNav(e) {
+    if (e) e.preventDefault();
+    const user = getUser();
+    if (user && user.role === 'patient') {
+        window.location.href = '/patient/book-appointment.html';
+    } else {
+        window.location.href = '/patient/login.html?redirect=/patient/book-appointment.html';
+    }
+}
+
+function bookWithSpec(specId) {
+    const user = getUser();
+    const dest = `/patient/book-appointment.html?spec=${specId}`;
+    if (user && user.role === 'patient') {
+        window.location.href = dest;
+    } else {
+        window.location.href = `/patient/login.html?redirect=${encodeURIComponent(dest)}`;
+    }
+}
+
+function medicalHistoryNav(e) {
+    if (e) e.preventDefault();
+    const user = getUser();
+    if (user && user.role === 'patient') {
+        window.location.href = '/patient/medical-history.html';
+    } else {
+        window.location.href = '/patient/login.html?redirect=/patient/medical-history.html';
+    }
+}
+
+function checkAppointmentNav(e) {
+    if (e) e.preventDefault();
+    const user = getUser();
+    if (user && user.role === 'patient') {
+        window.location.href = '/patient/appointments.html';
+    } else {
+        window.location.href = '/patient/login.html?redirect=/patient/appointments.html';
+    }
+}
+
+// ============================================
 // Dynamic Header/Footer Loading
 // ============================================
 async function loadIncludes() {
@@ -259,7 +302,9 @@ function logout() {
 
 function requireAuth(role) {
     if (!isLoggedIn() || getUserRole() !== role) {
-        window.location.href = role === 'admin' ? '/admin/login.html' : '/doctor/login.html';
+        if (role === 'admin') window.location.href = '/admin/login.html';
+        else if (role === 'patient') window.location.href = '/patient/login.html';
+        else window.location.href = '/doctor/login.html';
         return false;
     }
     return true;
@@ -339,7 +384,7 @@ function viewDetails(id) {
     const body = document.getElementById('modalBody');
     if (!modal || !body) return;
 
-    modal.classList.add('open');
+    openModal('detailsModal');
     body.innerHTML = '<div class="spinner" style="margin: 20px auto;"></div>';
 
     apiGet(`/appointments/${id}`).then(async data => {
@@ -451,9 +496,30 @@ function viewDetails(id) {
     });
 }
 
-function closeModal() {
-    const modal = document.getElementById('detailsModal');
-    if (modal) modal.classList.remove('open');
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.add('open');
+        modal.style.display = 'flex';
+        document.body.classList.add('modal-open');
+    }
+}
+
+function closeModal(modalId = 'detailsModal') {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('open');
+        modal.style.display = 'none';
+    }
+    
+    // Check if any other modal is still open before removing the class
+    const anyModalOpen = Array.from(document.querySelectorAll('.modal')).some(m => 
+        m.classList.contains('open') || m.style.display === 'flex'
+    );
+    
+    if (!anyModalOpen) {
+        document.body.classList.remove('modal-open');
+    }
 }
 
 // Global modal click listener

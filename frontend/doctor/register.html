@@ -18,72 +18,97 @@
             </div>
 
             <div class="form-container">
-                <form id="doctorRegisterForm" enctype="multipart/form-data">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Full Name <span class="required">*</span></label>
-                            <input type="text" class="form-input" id="regFullName" name="full_name" required>
-                        </div>
-
+                <!-- STEP 1: EMAIL -->
+                <div id="emailSection">
+                    <form id="emailForm" onsubmit="sendDoctorOtp(event)">
                         <div class="form-group">
                             <label class="form-label">Email Address <span class="required">*</span></label>
-                            <input type="email" class="form-input" id="regEmail" name="email" required>
+                            <input type="email" class="form-input" id="regEmail" name="email" placeholder="you@email.com" required>
                         </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Password <span class="required">*</span></label>
-                            <input type="password" class="form-input" id="regPassword" name="password" required>
+                        <div style="margin-top: var(--space-6);">
+                            <button type="submit" class="btn btn-primary btn-block" id="getOtpBtn">Get OTP</button>
                         </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Specialization <span class="required">*</span></label>
-                            <select class="form-select" id="regSpecialization" name="specialization_id" required>
-                                <option value="">Select specialization</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">License Number <span class="required">*</span></label>
-                            <input type="text" class="form-input" id="regLicense" name="license_number" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Qualification</label>
-                            <input type="text" class="form-input" id="regQualification" name="qualification" placeholder="e.g. MBBS, MD">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Experience (Years)</label>
-                            <input type="number" class="form-input" id="regExperience" name="experience_years" value="0" min="0">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Phone Number <span class="required">*</span></label>
-                            <input type="tel" class="form-input" id="regPhone" name="phone" placeholder="+91 9876543210" pattern="^(\+91[\-\s]?)?[0-9]{10}$" title="Please enter a valid 10-digit Indian phone number, optionally starting with +91" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Consultation Fee (₹) <span class="required">*</span></label>
-                            <input type="number" class="form-input" id="regFee" name="consultation_fee" placeholder="e.g. 500" min="0" step="0.01" required>
-                        </div>
-
-                        <div class="form-group" style="grid-column: 1 / -1;">
-                            <label class="form-label">Bio / About</label>
-                            <textarea class="form-input" id="regBio" name="bio" rows="3" placeholder="Brief professional summary..." style="resize: vertical;"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Upload License/Degree <span class="required">*</span></label>
-                            <input type="file" class="form-input" id="regDocument" name="document" accept=".pdf,.jpg,.png" required>
-                        </div>
+                    </form>
+                    <div style="margin-top: var(--space-6); text-align: center;">
+                        Already have an account? <a href="/doctor/login.html" style="color: var(--primary-600); font-weight: 600;">Login here</a>
                     </div>
+                </div>
 
-                    <div style="margin-top: var(--space-8);">
-                        <button type="submit" class="btn btn-primary btn-block" id="registerBtn">Register Now</button>
+                <!-- STEP 2: OTP -->
+                <div id="otpSection" style="display: none; text-align:center; padding: var(--space-4);">
+                    <div style="width:72px;height:72px; background:var(--primary-50); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto var(--space-4);">
+                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--primary-600)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                     </div>
-                </form>
-                <div style="margin-top: var(--space-6); text-align: center;">
-                    Already have an account? <a href="/doctor/login.html" style="color: var(--primary-600); font-weight: 600;">Login here</a>
+                    <h2 style="font-size:1.5rem; font-weight:700; color:var(--neutral-800); margin-bottom:var(--space-2);">Verify Your Email</h2>
+                    <p style="color:var(--neutral-500); margin-bottom:var(--space-6);">We sent a 6-digit OTP to <strong id="otpEmailDisplay"></strong></p>
+                    <div class="form-group" style="max-width:300px; margin:0 auto var(--space-6);">
+                        <input type="text" id="doctorOtpInput" class="form-input" placeholder="000000" maxlength="6" style="text-align:center; font-size:2rem; font-weight:700; letter-spacing:10px;" required>
+                    </div>
+                    <button onclick="verifyDoctorOtp()" id="verifyDoctorBtn" class="btn btn-primary" style="min-width:200px;">Verify Email</button>
+                </div>
+
+                <!-- STEP 3: DETAILS -->
+                <div id="detailsSection" style="display: none;">
+                    <form id="doctorRegisterForm" enctype="multipart/form-data">
+                        <input type="hidden" id="finalEmail" name="email">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Full Name <span class="required">*</span></label>
+                                <input type="text" class="form-input" id="regFullName" name="full_name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Password <span class="required">*</span></label>
+                                <input type="password" class="form-input" id="regPassword" name="password" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Specialization <span class="required">*</span></label>
+                                <select class="form-select" id="regSpecialization" name="specialization_id" required>
+                                    <option value="">Select specialization</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">License Number <span class="required">*</span></label>
+                                <input type="text" class="form-input" id="regLicense" name="license_number" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Qualification</label>
+                                <input type="text" class="form-input" id="regQualification" name="qualification" placeholder="e.g. MBBS, MD">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Experience (Years)</label>
+                                <input type="number" class="form-input" id="regExperience" name="experience_years" value="0" min="0">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Phone Number <span class="required">*</span></label>
+                                <input type="tel" class="form-input" id="regPhone" name="phone" placeholder="+91 9876543210" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Consultation Fee (₹) <span class="required">*</span></label>
+                                <input type="number" class="form-input" id="regFee" name="consultation_fee" placeholder="e.g. 500" min="0" step="0.01" required>
+                            </div>
+
+                            <div class="form-group" style="grid-column: 1 / -1;">
+                                <label class="form-label">Bio / About</label>
+                                <textarea class="form-input" id="regBio" name="bio" rows="3" placeholder="Brief professional summary..." style="resize: vertical;"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Upload License/Degree <span class="required">*</span></label>
+                                <input type="file" class="form-input" id="regDocument" name="document" accept=".pdf,.jpg,.png" required>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: var(--space-8);">
+                            <button type="submit" class="btn btn-primary btn-block" id="registerBtn">Complete Registration</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -92,42 +117,88 @@
     <div id="footer-placeholder"></div>
     <script src="/script.js"></script>
     <script>
+        let registeredEmail = '';
+
         document.addEventListener('DOMContentLoaded', async () => {
             const specSelect = document.getElementById('regSpecialization');
             const form = document.getElementById('doctorRegisterForm');
-            // Load specializations
             try {
                 const data = await apiGet('/specializations');
                 data.specializations.forEach(s => {
                     specSelect.innerHTML += `<option value="${s.id}">${s.name}</option>`;
                 });
             } catch (e) {}
+        });
 
-            // Handle Registration
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const formData = new FormData(form);
-                const btn = document.getElementById('registerBtn');
-                btn.disabled = true;
-                btn.textContent = 'Registering...';
+        async function sendDoctorOtp(e) {
+            e.preventDefault();
+            const email = document.getElementById('regEmail').value;
+            const btn = document.getElementById('getOtpBtn');
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
 
-                try {
-                    const response = await fetch('/api/auth/doctor/register', {
-                        method: 'POST',
-                        body: formData
-                    });
-                    const data = await response.json();
-                    
-                    if (!response.ok) throw new Error(data.error || 'Registration failed');
-                    
-                    showToast('Registration successful! Waiting for approval.', 'success');
-                    setTimeout(() => window.location.href = '/doctor/login.html', 2000);
-                } catch (error) {
-                    showToast(error.message, 'error');
-                    btn.disabled = false;
-                    btn.textContent = 'Register Now';
-                }
-            });
+            try {
+                const response = await fetch('/api/auth/doctor/send-register-otp', { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || 'Failed to send OTP');
+
+                registeredEmail = email;
+                document.getElementById('emailSection').style.display = 'none';
+                document.getElementById('otpSection').style.display = 'block';
+                document.getElementById('otpEmailDisplay').textContent = email;
+                document.getElementById('finalEmail').value = email;
+                showToast('OTP sent to your email!', 'success');
+            } catch (error) {
+                showToast(error.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Get OTP';
+            }
+        }
+
+        async function verifyDoctorOtp() {
+            const otp = document.getElementById('doctorOtpInput').value.trim();
+            const btn = document.getElementById('verifyDoctorBtn');
+            if (!otp || otp.length !== 6) { showToast('Please enter the 6-digit OTP', 'error'); return; }
+            btn.disabled = true; btn.textContent = 'Verifying...';
+            try {
+                const res = await fetch('/api/auth/doctor/verify-register-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: registeredEmail, otp })
+                });
+                const data = await res.json();
+                if (!res.ok) { showToast(data.error, 'error'); btn.disabled = false; btn.textContent = 'Verify Email'; return; }
+                showToast('Email verified!', 'success');
+                document.getElementById('otpSection').style.display = 'none';
+                document.getElementById('detailsSection').style.display = 'block';
+            } catch (e) { showToast('Connection error', 'error'); btn.disabled = false; btn.textContent = 'Verify Email'; }
+        }
+
+        document.getElementById('doctorRegisterForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = document.getElementById('doctorRegisterForm');
+            const formData = new FormData(form);
+            const btn = document.getElementById('registerBtn');
+            btn.disabled = true;
+            btn.textContent = 'Registering...';
+
+            try {
+                const response = await fetch('/api/auth/doctor/register', { method: 'POST', body: formData });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || 'Registration failed');
+
+                showToast('Registration complete! Admin will review your application.', 'success');
+                setTimeout(() => window.location.href = '/doctor/login.html', 2500);
+            } catch (error) {
+                showToast(error.message, 'error');
+                btn.disabled = false;
+                btn.textContent = 'Complete Registration';
+            }
         });
     </script>
 </body>

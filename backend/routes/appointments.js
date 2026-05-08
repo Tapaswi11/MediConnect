@@ -7,7 +7,7 @@ const express = require('express');
 const router = express.Router();
 const { pool } = require('../db');
 
-const { sendEmail } = require('../utils/mailer');
+const { sendEmail, sendAppointmentStatusEmail } = require('../utils/mailer');
 
 // ============================================
 // Create Appointment (Patient booking)
@@ -16,7 +16,7 @@ const { sendEmail } = require('../utils/mailer');
 router.post('/', async (req, res) => {
     try {
         const { 
-            patient_name, patient_email, patient_phone, 
+            patient_id, patient_name, patient_email, patient_phone, 
             doctor_id, specialization_id, appointment_date, 
             time_slot, notes 
         } = req.body;
@@ -46,9 +46,9 @@ router.post('/', async (req, res) => {
 
         // Insert appointment
         const [result] = await pool.query(
-            `INSERT INTO appointments (appointment_number, patient_name, patient_email, patient_phone, doctor_id, specialization_id, appointment_date, time_slot, notes)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [appointmentNumber, patient_name, patient_email, patient_phone, doctor_id, specialization_id, appointment_date, time_slot, notes || null]
+            `INSERT INTO appointments (appointment_number, patient_id, patient_name, patient_email, patient_phone, doctor_id, specialization_id, appointment_date, time_slot, notes)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [appointmentNumber, patient_id || null, patient_name, patient_email, patient_phone, doctor_id, specialization_id, appointment_date, time_slot, notes || null]
         );
 
         // Send confirmation email
@@ -202,20 +202,18 @@ router.put('/:id/status', async (req, res) => {
             [status, diagnosis || null, prescription || null, req.params.id]
         );
 
-        // Send status update email
-        let emailHtml = `<h3>Appointment Status Update</h3>
-                         <p>Your appointment <strong>${apt[0].appointment_number}</strong> has been updated to: <strong>${status.toUpperCase()}</strong></p>`;
-        
-        if (status === 'completed' && diagnosis) {
-            emailHtml += `<hr><p><strong>Diagnosis:</strong> ${diagnosis}</p>`;
-            if (prescription) emailHtml += `<p><strong>Prescription:</strong> ${prescription}</p>`;
-        }
+        // Get doctor name for email
+        const [docRows] = await pool.query('SELECT full_name FROM doctors WHERE id = ?', [apt[0].doctor_id]);
+        const doctorName = docRows.length > 0 ? docRows[0].full_name : 'Your Doctor';
 
-        await sendEmail(
+        await sendAppointmentStatusEmail(
             apt[0].patient_email,
-            `Appointment Status: ${status.toUpperCase()} - MediConnect`,
-            `Your appointment (ID: ${apt[0].appointment_number}) has been ${status}.`,
-            emailHtml
+            apt[0].patient_name,
+            apt[0].appointment_number,
+            status,
+            apt[0].appointment_date,
+            apt[0].time_slot,
+            doctorName
         );
 
         res.json({ message: `Appointment ${status} successfully` });

@@ -19,16 +19,43 @@ async function initAppointmentForm() {
 
     if (!specSelect || !form) return;
 
+    // REQUIRE PATIENT LOGIN
+    const user = getUser();
+    if (!user || user.role !== 'patient') {
+        window.location.href = '/patient/login.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
+        return;
+    }
+
+    // Pre-fill patient details from logged-in user
+    const nameInput = document.getElementById('patientName');
+    const emailInput = document.getElementById('patientEmail');
+    const phoneInput = document.getElementById('patientPhone');
+    if (nameInput) { nameInput.value = user.full_name || ''; nameInput.setAttribute('readonly', true); }
+    if (emailInput) { emailInput.value = user.email || ''; emailInput.setAttribute('readonly', true); }
+    if (phoneInput) {
+        // Fetch full profile for phone number
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch('/api/patients/profile', { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            if (data.patient && data.patient.phone) phoneInput.value = data.patient.phone;
+        } catch (e) {}
+    }
+
     // Set minimum date to today
     const today = new Date().toISOString().split('T')[0];
-    if (dateInput) {
-        dateInput.min = today;
-    }
+    if (dateInput) dateInput.min = today;
 
     // Load specializations
     await loadSpecializations();
 
-
+    // Pre-select specialization from query param
+    const params = new URLSearchParams(window.location.search);
+    const specId = params.get('spec');
+    if (specId) {
+        specSelect.value = specId;
+        specSelect.dispatchEvent(new Event('change'));
+    }
 
     // When specialization changes, load doctors
     specSelect.addEventListener('change', async () => {
@@ -37,7 +64,6 @@ async function initAppointmentForm() {
         dateInput.disabled = true;
         timeSelect.innerHTML = '<option value="">Select doctor first</option>';
         timeSelect.disabled = true;
-
         if (specId) {
             await loadDoctorsBySpecialization(specId);
         } else {
@@ -60,10 +86,7 @@ async function initAppointmentForm() {
     dateInput.addEventListener('change', async () => {
         const doctorId = doctorSelect.value;
         const date = dateInput.value;
-
-        if (doctorId && date) {
-            await loadAvailableSlots(doctorId, date);
-        }
+        if (doctorId && date) await loadAvailableSlots(doctorId, date);
     });
 
     // Handle form submission
@@ -75,7 +98,6 @@ async function initAppointmentForm() {
 // ============================================
 async function loadSpecializations() {
     const specSelect = document.getElementById('specialization');
-    
     try {
         const data = await apiGet('/specializations');
         if (data.specializations) {
@@ -94,11 +116,9 @@ async function loadSpecializations() {
 // ============================================
 async function loadDoctorsBySpecialization(specId) {
     const doctorSelect = document.getElementById('doctor');
-    
     try {
         const data = await apiGet(`/doctors?specialization_id=${specId}&status=active`);
         doctorSelect.innerHTML = '<option value="">Select doctor</option>';
-        
         if (data.doctors && data.doctors.length > 0) {
             data.doctors.forEach(doc => {
                 doctorSelect.innerHTML += `<option value="${doc.id}">${doc.full_name} - ${doc.qualification || ''}</option>`;
@@ -119,7 +139,6 @@ async function loadDoctorsBySpecialization(specId) {
 async function loadAvailableSlots(doctorId, date) {
     const timeSelect = document.getElementById('timeSlot');
     const statusMsg = document.getElementById('slotStatus');
-    
     timeSelect.innerHTML = '<option value="">Loading slots...</option>';
     timeSelect.disabled = true;
     statusMsg.textContent = '';
@@ -127,7 +146,6 @@ async function loadAvailableSlots(doctorId, date) {
     try {
         const data = await apiGet(`/doctors/${doctorId}/slots?date=${date}`);
         timeSelect.innerHTML = '<option value="">Select time</option>';
-        
         if (data.slots && data.slots.length > 0) {
             data.slots.forEach(slot => {
                 timeSelect.innerHTML += `<option value="${slot}">${slot}</option>`;
@@ -156,7 +174,11 @@ async function handleAppointmentSubmit(e) {
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<div class="spinner" style="width:20px;height:20px;border-width:2px;"></div> Booking...';
 
+    const user = getUser();
+    const token = localStorage.getItem('token');
+
     const formData = {
+        patient_id: user ? user.id : null,
         patient_name: document.getElementById('patientName').value.trim(),
         patient_email: document.getElementById('patientEmail').value.trim(),
         patient_phone: document.getElementById('patientPhone').value.trim(),
@@ -168,15 +190,22 @@ async function handleAppointmentSubmit(e) {
     };
 
     try {
-        const data = await apiPost('/appointments', formData);
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const res = await fetch('/api/appointments', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(formData)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Booking failed');
 
         // Show success message
         document.getElementById('appointmentFormContainer').classList.add('hidden');
         document.getElementById('successMessage').classList.remove('hidden');
         document.getElementById('appointmentNumber').textContent = data.appointment.appointment_number;
-
         showToast('Appointment booked successfully!', 'success');
-
     } catch (error) {
         showToast(error.message || 'Failed to book appointment', 'error');
         submitBtn.disabled = false;
@@ -194,6 +223,5 @@ async function handleAppointmentSubmit(e) {
 // Reset Form (for "Book Another")
 // ============================================
 function resetForm() {
-    window.location.reload(); // Simplest way to reset everything
+    window.location.reload();
 }
-

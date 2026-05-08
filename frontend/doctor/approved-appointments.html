@@ -95,7 +95,7 @@
         async function updateStatus(id, status) {
             if (status === 'completed') {
                 currentAptId = id;
-                document.getElementById('diagnosisModal').style.display = 'flex';
+                openModal('diagnosisModal');
                 return;
             }
 
@@ -110,7 +110,7 @@
         }
 
         function closeDiagnosisModal() {
-            document.getElementById('diagnosisModal').style.display = 'none';
+            closeModal('diagnosisModal');
             document.getElementById('diagInput').value = '';
             document.getElementById('presInput').value = '';
             currentAptId = null;
@@ -168,12 +168,12 @@
 
     <!-- Appointment Details Modal -->
     <div id="detailsModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 700px;">
             <div class="modal-header">
                 <h3 class="modal-title">Appointment Details</h3>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
-            <div id="modalBody"></div>
+            <div id="modalBody" style="padding: var(--space-6);"></div>
         </div>
     </div>
 </body>
