@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,15 @@
     <title>Patient Login - MediConnect</title>
     <link rel="stylesheet" href="/style.css">
 </head>
+
 <body class="login-page">
     <div class="login-card">
         <!-- Back to Home -->
-        <a href="/index.html" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--gray-600); font-weight: 500; font-size: 14px; margin-bottom: var(--space-6); transition: color 0.3s ease;" onmouseover="this.style.color='var(--primary-600)'" onmouseout="this.style.color='var(--gray-600)'">
+        <a href="/index.html"
+            style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--gray-600); font-weight: 500; font-size: 14px; margin-bottom: var(--space-6); transition: color 0.3s ease;"
+            onmouseover="this.style.color='var(--primary-600)'" onmouseout="this.style.color='var(--gray-600)'">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
+                <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
             Back to Home
         </a>
@@ -20,7 +24,10 @@
         <!-- Logo -->
         <div class="logo" style="justify-content: center; margin-bottom: var(--space-4);">
             <div class="logo-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path
+                        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                </svg>
             </div>
             <span class="logo-text">Medi<span class="logo-highlight">Connect</span></span>
         </div>
@@ -28,166 +35,95 @@
         <h2 class="portal-title">Patient Portal</h2>
         <p class="portal-subtitle">Book appointments and track your medical history</p>
 
-        <!-- Tabs -->
-        <div style="display:flex; gap:0; margin-bottom: var(--space-6); border-bottom: 2px solid var(--neutral-100);">
-            <button id="loginTab" onclick="switchTab('login')" style="flex:1; padding: var(--space-3) var(--space-4); background:none; border:none; font-weight:600; color:var(--primary-600); border-bottom: 2px solid var(--primary-600); cursor:pointer; transition: all 0.2s; font-size:0.95rem;">Login</button>
-            <button id="registerTab" onclick="switchTab('register')" style="flex:1; padding: var(--space-3) var(--space-4); background:none; border:none; font-weight:600; color:var(--neutral-400); cursor:pointer; transition: all 0.2s; font-size:0.95rem; margin-bottom:-2px;">Register</button>
-        </div>
-
         <!-- LOGIN FORM -->
-        <div id="loginForm">
-            <h2 style="font-size:1.15rem; font-weight:700; margin-bottom: var(--space-1); color:var(--neutral-800);">Welcome back!</h2>
-            <p style="color:var(--neutral-500); font-size:0.875rem; margin-bottom: var(--space-6);">Sign in to your patient account.</p>
-            <form onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" id="loginEmail" class="form-input" placeholder="you@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" required>
-                </div>
-                <div id="loginError" class="alert alert-error" style="display:none; margin-bottom:var(--space-4);"></div>
-                <button type="submit" id="loginBtn" class="btn btn-primary btn-block">Sign In</button>
-            </form>
-            <p style="text-align:center; margin-top: var(--space-4); font-size:0.85rem; color: var(--neutral-500);">
-                Don't have an account? <a href="#" onclick="switchTab('register')" style="color:var(--primary-600); font-weight:600;">Register here</a>
-            </p>
-        </div>
 
-        <!-- REGISTER EMAIL FORM -->
-        <div id="registerForm" style="display:none;">
-            <h2 style="font-size:1.15rem; font-weight:700; margin-bottom: var(--space-1); color:var(--neutral-800);">Create Account</h2>
-            <p style="color:var(--neutral-500); font-size:0.875rem; margin-bottom: var(--space-6);">Join MediConnect to book appointments.</p>
-            <form onsubmit="handleRegisterEmail(event)">
-                <div class="form-group">
-                    <label class="form-label">Email Address <span class="required">*</span></label>
-                    <input type="email" id="regEmail" class="form-input" placeholder="you@email.com" required>
-                </div>
-                <div id="registerError" class="alert alert-error" style="display:none; margin-bottom:var(--space-4);"></div>
-                <button type="submit" id="registerBtn" class="btn btn-primary btn-block">Get OTP</button>
-            </form>
-            <p style="text-align:center; margin-top: var(--space-4); font-size:0.85rem; color: var(--neutral-500);">
-                Already have an account? <a href="#" onclick="switchTab('login')" style="color:var(--primary-600); font-weight:600;">Sign in</a>
-            </p>
-        </div>
-
-        <!-- REGISTER DETAILS FORM -->
-        <div id="registerDetailsForm" style="display:none;">
-            <h2 style="font-size:1.15rem; font-weight:700; margin-bottom: var(--space-1); color:var(--neutral-800);">Complete Registration</h2>
-            <p style="color:var(--neutral-500); font-size:0.875rem; margin-bottom: var(--space-6);">Your email is verified. Please complete your profile.</p>
-            <form onsubmit="handleRegisterDetails(event)">
-                <div class="form-group">
-                    <label class="form-label">Full Name <span class="required">*</span></label>
-                    <input type="text" id="regName" class="form-input" placeholder="Your full name" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Phone Number <span class="required">*</span></label>
-                    <input type="tel" id="regPhone" class="form-input" placeholder="+91 98765 43210" required>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap: var(--space-4);">
-                    <div class="form-group">
-                        <label class="form-label">Gender</label>
-                        <select id="regGender" class="form-select">
-                            <option value="">Select</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Blood Group</label>
-                        <select id="regBlood" class="form-select">
-                            <option value="">Select</option>
-                            <option value="A+">A+</option><option value="A-">A-</option>
-                            <option value="B+">B+</option><option value="B-">B-</option>
-                            <option value="O+">O+</option><option value="O-">O-</option>
-                            <option value="AB+">AB+</option><option value="AB-">AB-</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password <span class="required">*</span></label>
-                    <input type="password" id="regPassword" class="form-input" placeholder="Minimum 6 characters" minlength="6" required>
-                </div>
-                <div id="registerDetailsError" class="alert alert-error" style="display:none; margin-bottom:var(--space-4);"></div>
-                <button type="submit" id="registerDetailsBtn" class="btn btn-primary btn-block">Create Account</button>
-            </form>
-        </div>
-
-        <!-- OTP FORM -->
-        <div id="otpForm" style="display:none;">
-            <div style="text-align:center; margin-bottom: var(--space-6);">
-                <div style="width:64px;height:64px; background:var(--primary-50); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto var(--space-4);">
-                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--primary-600)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                </div>
-                <h2 style="font-size:1.15rem; font-weight:700; color:var(--neutral-800);">Check your email!</h2>
-                <p style="color:var(--neutral-500); font-size:0.875rem; margin-top:var(--space-2);">We sent a 6-digit OTP to <strong id="otpEmailDisplay"></strong></p>
-            </div>
+        <form class="login-form" id="loginForm" onsubmit="handleLogin(event)">
             <div class="form-group">
-                <label class="form-label" style="text-align:center; display:block;">Enter OTP</label>
-                <input type="text" id="otpInput" class="form-input" placeholder="000000" maxlength="6" style="text-align:center; font-size:1.8rem; font-weight:700; letter-spacing:8px;" required>
+                <label class="form-label">Email Address</label>
+                <div class="form-input-icon">
+                    <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                    <input type="email" class="form-input" id="loginEmail" placeholder="you@example.com"
+                        autocomplete="off" required>
+                </div>
             </div>
-            <div id="otpError" class="alert alert-error" style="display:none; margin-bottom:var(--space-4);"></div>
-            <button onclick="handleVerifyOtp()" id="verifyBtn" class="btn btn-primary btn-block">Verify OTP</button>
-            <div style="text-align:center; margin-top: var(--space-4);">
-                <button onclick="resendOtp()" style="background:none; border:none; color:var(--primary-600); font-weight:600; cursor:pointer; font-size:0.9rem;">Didn't receive? Resend OTP</button>
+
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <div class="form-input-icon">
+                    <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="••••••••"
+                        autocomplete="new-password" required>
+                </div>
             </div>
-        </div>
 
-        <!-- Divider -->
-        <div class="login-divider"><span>Other Portals</span></div>
+            <div class="login-extras">
+                <label class="remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    Remember me
+                </label>
+                <a href="#" class="forgot-link">Forgot password?</a>
+            </div>
 
-        <!-- Portal Switch -->
-        <div class="other-portals">
-            <a href="/doctor/login.html" class="portal-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            <div id="loginError" class="alert alert-error" style="display:none; margin-bottom:var(--space-4);">
+            </div>
+            <button type="submit" id="loginBtn" class="btn btn-primary btn-block">Sign In</button>
+        </form>
+        <p style="text-align:center; margin-top: var(--space-4); font-size:0.85rem; color: var(--neutral-500);">
+            Don't have an account? <a href="/patient/register.html"
+                style="color:var(--primary-600); font-weight:600;">Register here</a>
+        </p>
+    </div>
+
+    <!-- OTP FORM (Moved to register.html, but kept here if login requires OTP verification) -->
+    <div id="otpForm" style="display:none; padding: 2rem;">
+        <div style="text-align:center; margin-bottom: var(--space-6);">
+            <div
+                style="width:64px;height:64px; background:var(--primary-50); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto var(--space-4);">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--primary-600)"
+                    stroke-width="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
                 </svg>
-                Doctor Portal
-            </a>
+            </div>
+            <h2 style="font-size:1.15rem; font-weight:700; color:var(--neutral-800);">Two-Factor Authentication</h2>
+            <p style="color:var(--neutral-500); font-size:0.875rem; margin-top:var(--space-2);">We sent a 6-digit
+                OTP to <strong id="otpEmailDisplay"></strong></p>
         </div>
+        <div class="form-group">
+            <label class="form-label" style="text-align:center; display:block;">Enter OTP</label>
+            <input type="text" id="otpInput" class="form-input" placeholder="000000" maxlength="6"
+                style="text-align:center; font-size:1.8rem; font-weight:700; letter-spacing:8px;" required>
+        </div>
+        <div id="otpError" class="alert alert-error" style="display:none; margin-bottom:var(--space-4);"></div>
+        <button onclick="handleVerifyOtp()" id="verifyBtn" class="btn btn-primary btn-block">Verify OTP</button>
     </div>
 
     <script src="/script.js"></script>
     <script>
         let currentEmail = '';
-        let otpPurpose = 'register'; // 'register' or 'login'
         let redirectAfterLogin = '';
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Check if patient already logged in
             const user = getUser();
             if (user && user.role === 'patient') {
                 window.location.href = '/patient/dashboard.html';
                 return;
             }
-            // Get redirect URL from query params
             const params = new URLSearchParams(window.location.search);
+            if (params.get('tab') === 'register') {
+                window.location.href = '/patient/register.html';
+                return;
+            }
             redirectAfterLogin = params.get('redirect') || '/patient/dashboard.html';
-            const tab = params.get('tab');
-            if (tab === 'register') switchTab('register');
         });
-
-        function switchTab(tab) {
-            const isLogin = tab === 'login';
-            document.getElementById('loginForm').style.display = isLogin ? 'block' : 'none';
-            document.getElementById('registerForm').style.display = isLogin ? 'none' : 'block';
-            document.getElementById('otpForm').style.display = 'none';
-            document.getElementById('registerDetailsForm').style.display = 'none';
-            document.getElementById('loginTab').style.cssText = `flex:1; padding:var(--space-3) var(--space-4); background:none; border:none; font-weight:600; cursor:pointer; font-size:0.95rem; margin-bottom:-2px; ${isLogin ? 'color:var(--primary-600); border-bottom:2px solid var(--primary-600);' : 'color:var(--neutral-400);'}`;
-            document.getElementById('registerTab').style.cssText = `flex:1; padding:var(--space-3) var(--space-4); background:none; border:none; font-weight:600; cursor:pointer; font-size:0.95rem; margin-bottom:-2px; ${!isLogin ? 'color:var(--primary-600); border-bottom:2px solid var(--primary-600);' : 'color:var(--neutral-400);'}`;
-        }
-
-        function showOtpForm(email) {
-            currentEmail = email;
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('registerForm').style.display = 'none';
-            document.getElementById('registerDetailsForm').style.display = 'none';
-            document.getElementById('otpForm').style.display = 'block';
-            document.getElementById('otpEmailDisplay').textContent = email;
-            document.getElementById('otpInput').focus();
-        }
 
         async function handleLogin(e) {
             e.preventDefault();
@@ -230,37 +166,12 @@
             }
         }
 
-        async function handleRegisterEmail(e) {
-            e.preventDefault();
-            const btn = document.getElementById('registerBtn');
-            const errEl = document.getElementById('registerError');
-            errEl.style.display = 'none';
-            btn.disabled = true;
-            btn.textContent = 'Sending OTP...';
-
-            try {
-                const res = await fetch('/api/patients/send-register-otp', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email: document.getElementById('regEmail').value
-                    })
-                });
-                const data = await res.json();
-                if (!res.ok) {
-                    errEl.textContent = data.error;
-                    errEl.style.display = 'block';
-                    return;
-                }
-                showToast('OTP sent to your email!', 'success');
-                showOtpForm(document.getElementById('regEmail').value);
-            } catch (err) {
-                errEl.textContent = 'Connection error. Please try again.';
-                errEl.style.display = 'block';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Get OTP';
-            }
+        function showOtpForm(email) {
+            currentEmail = email;
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('otpForm').style.display = 'block';
+            document.getElementById('otpEmailDisplay').textContent = email;
+            document.getElementById('otpInput').focus();
         }
 
         async function handleVerifyOtp() {
@@ -279,7 +190,7 @@
             btn.textContent = 'Verifying...';
 
             try {
-                const res = await fetch('/api/patients/verify-register-otp', {
+                const res = await fetch('/api/patients/verify-login-otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: currentEmail, otp })
@@ -290,10 +201,10 @@
                     errEl.style.display = 'block';
                     return;
                 }
-                showToast('Email verified!', 'success');
-                // Show register details form
-                document.getElementById('otpForm').style.display = 'none';
-                document.getElementById('registerDetailsForm').style.display = 'block';
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                showToast('Login successful!', 'success');
+                setTimeout(() => window.location.href = redirectAfterLogin, 800);
             } catch (err) {
                 errEl.textContent = 'Connection error. Please try again.';
                 errEl.style.display = 'block';
@@ -302,60 +213,7 @@
                 btn.textContent = 'Verify OTP';
             }
         }
-
-        async function handleRegisterDetails(e) {
-            e.preventDefault();
-            const btn = document.getElementById('registerDetailsBtn');
-            const errEl = document.getElementById('registerDetailsError');
-            errEl.style.display = 'none';
-            btn.disabled = true;
-            btn.textContent = 'Creating Account...';
-
-            try {
-                const res = await fetch('/api/patients/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        full_name: document.getElementById('regName').value,
-                        email: currentEmail,
-                        phone: document.getElementById('regPhone').value,
-                        gender: document.getElementById('regGender').value,
-                        blood_group: document.getElementById('regBlood').value,
-                        password: document.getElementById('regPassword').value
-                    })
-                });
-                const data = await res.json();
-                if (!res.ok) {
-                    errEl.textContent = data.error;
-                    errEl.style.display = 'block';
-                    return;
-                }
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('user', JSON.stringify(data.user));
-                showToast('Account created successfully!', 'success');
-                setTimeout(() => window.location.href = redirectAfterLogin, 800);
-            } catch (err) {
-                errEl.textContent = 'Connection error. Please try again.';
-                errEl.style.display = 'block';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Create Account';
-            }
-        }
-
-        async function resendOtp() {
-            try {
-                await fetch('/api/patients/resend-otp', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: currentEmail })
-                });
-                showToast('New OTP sent to your email!', 'success');
-                document.getElementById('otpInput').value = '';
-            } catch (err) {
-                showToast('Failed to resend OTP.', 'error');
-            }
-        }
     </script>
 </body>
+
 </html>

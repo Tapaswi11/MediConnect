@@ -170,20 +170,35 @@
                     <h3 class="table-title">Manage Availability</h3>
                 </div>
                 <div style="padding: var(--space-6);">
-                    <form id="availabilityForm" class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-4);">
+                    <form id="availabilityForm" style="display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: flex-end;">
                         <div class="form-group">
-                            <label class="form-label">Date</label>
-                            <input type="date" class="form-input" id="availDate" required>
+                            <label class="form-label">Type</label>
+                            <select class="form-select" id="availType" onchange="toggleAvailType()">
+                                <option value="date">Specific Date</option>
+                                <option value="range">Date Range</option>
+                            </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="dateGroup">
+                            <label class="form-label">Date</label>
+                            <input type="date" class="form-input" id="availDate">
+                        </div>
+                        <div class="form-group" id="startDateGroup" style="display: none;">
+                            <label class="form-label">Start Date</label>
+                            <input type="date" class="form-input" id="availStartDate">
+                        </div>
+                        <div class="form-group" id="endDateGroup" style="display: none;">
+                            <label class="form-label">End Date</label>
+                            <input type="date" class="form-input" id="availEndDate">
+                        </div>
+                        <div class="form-group" style="min-width: 150px;">
                             <label class="form-label">Start Time</label>
                             <input type="time" class="form-input" id="availStart" value="09:00" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="min-width: 150px;">
                             <label class="form-label">End Time</label>
                             <input type="time" class="form-input" id="availEnd" value="17:00" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="min-width: 120px;">
                             <label class="form-label">Slot Duration</label>
                             <select class="form-select" id="availDuration">
                                 <option value="15">15 mins</option>
@@ -192,7 +207,7 @@
                                 <option value="60">60 mins</option>
                             </select>
                         </div>
-                        <div class="form-group" style="display: flex; align-items: flex-end;">
+                        <div class="form-group" style="flex: 1; min-width: 150px;">
                             <button type="submit" class="btn btn-primary btn-block">Set Availability</button>
                         </div>
                     </form>
@@ -271,13 +286,39 @@
                     return;
                 }
 
-                list.innerHTML = items.map(item => `
-                    <div style="background: var(--neutral-50); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); border: 1px solid var(--neutral-200); font-size: 0.8rem;">
-                        <strong>${formatDate(item.available_date)}</strong>: ${item.start_time.substring(0,5)} - ${item.end_time.substring(0,5)}
-                    </div>
-                `).join('');
+                list.innerHTML = items.map(item => {
+                    let label = item.available_date ? formatDate(item.available_date) : "Date Range";
+                    if (item.start_date || item.end_date) {
+                        label += ` (${item.start_date ? formatDate(item.start_date) : '...'} to ${item.end_date ? formatDate(item.end_date) : '...'})`;
+                    }
+                    return `
+                        <div style="background: var(--neutral-50); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); border: 1px solid var(--neutral-200); font-size: 0.8rem;">
+                            <strong>${label}</strong>: ${item.start_time.substring(0,5)} - ${item.end_time.substring(0,5)}
+                        </div>
+                    `;
+                }).join('');
             } catch (error) {
                 list.innerHTML = '<p style="color: var(--error-600); font-size: 0.8rem;">Failed to load.</p>';
+            }
+        }
+
+        function toggleAvailType() {
+            const type = document.getElementById('availType').value;
+            const dateGroup = document.getElementById('dateGroup');
+            const startGroup = document.getElementById('startDateGroup');
+            const endGroup = document.getElementById('endDateGroup');
+            const dateInput = document.getElementById('availDate');
+
+            if (type === 'date') {
+                dateGroup.style.display = 'block';
+                startGroup.style.display = 'none';
+                endGroup.style.display = 'none';
+                dateInput.required = true;
+            } else {
+                dateGroup.style.display = 'none';
+                startGroup.style.display = 'block';
+                endGroup.style.display = 'block';
+                dateInput.required = false;
             }
         }
 
@@ -287,11 +328,14 @@
             const btn = e.submitter;
             btn.disabled = true;
 
+            const type = document.getElementById('availType').value;
             const payload = {
-                available_date: document.getElementById('availDate').value,
+                available_date: type === 'date' ? document.getElementById('availDate').value : null,
+                start_date: type === 'range' ? document.getElementById('availStartDate').value : null,
+                end_date: type === 'range' ? document.getElementById('availEndDate').value : null,
                 start_time: document.getElementById('availStart').value,
                 end_time: document.getElementById('availEnd').value,
-                slot_duration_minutes: parseInt(document.getElementById('availDuration').value)
+                slot_duration: parseInt(document.getElementById('availDuration').value)
             };
 
             try {

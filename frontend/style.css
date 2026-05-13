@@ -454,7 +454,8 @@ button {
 .main-footer {
     background: var(--primary-900);
     color: rgba(255, 255, 255, 0.8);
-    margin-top: var(--space-12); /* Reduced from space-20 */
+    margin-top: var(--space-12);
+    /* Reduced from space-20 */
 }
 
 .footer-container {
@@ -562,7 +563,8 @@ button {
 }
 
 .section {
-    padding: var(--space-12) 0; /* Reduced from space-16 */
+    padding: var(--space-12) 0;
+    /* Reduced from space-16 */
 }
 
 /* Background Utility Classes */
@@ -582,10 +584,15 @@ button {
    HERO SECTION (Home Page)
    ============================================ */
 .hero-section {
-    padding: var(--space-16) 0 var(--space-12); /* Reduced from space-20 and space-16 */
+    padding: var(--space-24) 0;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(180deg, var(--primary-25) 0%, var(--white) 100%);
+    background: linear-gradient(90deg, rgba(246, 252, 251, 1) 25%, rgba(246, 252, 251, 0.7) 60%, rgba(246, 252, 251, 0) 100%), url('/hero-bg.jpg');
+    background-size: cover;
+    background-position: center right;
+    min-height: 580px;
+    display: flex;
+    align-items: center;
 }
 
 .hero-section::before {
@@ -615,24 +622,26 @@ button {
     }
 }
 
-.hero-section {
-    padding: var(--space-20) 0 var(--space-20);
-    position: relative;
-    overflow: hidden;
+/* Consolidated into top definition */
+
+.hero-section .container {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 var(--space-6) !important;
 }
 
-.hero-grid {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-12);
+.hero-section .hero-grid {
+    display: flex !important;
+    justify-content: flex-start !important;
     position: relative;
     z-index: 1;
 }
 
 .hero-text {
-    flex: 1;
-    max-width: 600px;
+    /*max-width: 650px;*/
+    text-align: center;
+    padding-left: 0;
 }
 
 .hero-image {
@@ -659,7 +668,7 @@ button {
 }
 
 .hero-description {
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     color: var(--neutral-600);
     line-height: 1.6;
     margin-bottom: var(--space-8);
@@ -821,7 +830,8 @@ button {
    ============================================ */
 .specializations-section {
     background: var(--neutral-50);
-    padding: var(--space-12) 0; /* Reduced from space-16 */
+    padding: var(--space-12) 0;
+    /* Reduced from space-16 */
     border-radius: var(--radius-2xl);
     margin: 0 var(--space-4);
 }
@@ -830,11 +840,13 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: var(--space-8); /* Reduced from space-10 */
+    margin-bottom: var(--space-8);
+    /* Reduced from space-10 */
 }
 
 .section-title {
-    font-size: clamp(1.6rem, 3.5vw, 2.2rem); /* Slightly more compact */
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    /* Slightly more compact */
     font-weight: 800;
 }
 
@@ -891,7 +903,8 @@ button {
    HOW IT WORKS SECTION
    ============================================ */
 .how-it-works-section {
-    padding: var(--space-16) 0; /* Reduced from space-20 */
+    padding: var(--space-16) 0;
+    /* Reduced from space-20 */
     text-align: center;
 }
 
@@ -900,7 +913,8 @@ button {
     justify-content: space-between;
     align-items: flex-start;
     gap: var(--space-8);
-    margin-top: var(--space-12); /* Reduced from space-16 */
+    margin-top: var(--space-12);
+    /* Reduced from space-16 */
     position: relative;
     max-width: 1000px;
     margin-left: auto;
@@ -1202,7 +1216,8 @@ button {
     border-radius: var(--radius-xl);
     border: 1px solid var(--neutral-100);
     box-shadow: var(--shadow-card);
-    padding: var(--space-5); /* Slightly reduced from space-6 */
+    padding: var(--space-5);
+    /* Slightly reduced from space-6 */
     margin-bottom: var(--space-4);
     text-align: left;
 }
@@ -1559,7 +1574,8 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--space-6); /* Reduced from space-8 */
+    margin-bottom: var(--space-6);
+    /* Reduced from space-8 */
 }
 
 .dashboard-title {
@@ -1578,7 +1594,8 @@ button {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: var(--space-5);
-    margin-bottom: var(--space-6); /* Reduced from space-8 */
+    margin-bottom: var(--space-6);
+    /* Reduced from space-8 */
 }
 
 .stat-card {
@@ -2243,10 +2260,12 @@ button {
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(4px);
     display: none;
-    align-items: flex-start; /* Changed from center to allow scrolling from top */
+    align-items: flex-start;
+    /* Changed from center to allow scrolling from top */
     justify-content: center;
     z-index: 2000;
-    overflow-y: auto; /* Allow the modal overlay itself to scroll */
+    overflow-y: auto;
+    /* Allow the modal overlay itself to scroll */
     padding: var(--space-8) 0;
 }
 
@@ -2261,7 +2280,8 @@ button {
     width: 90%;
     max-width: 500px;
     position: relative;
-    margin: auto; /* Centers in flex container */
+    margin: auto;
+    /* Centers in flex container */
 }
 
 .modal-header {
@@ -2296,5 +2316,11 @@ button {
 /* Prevent background scroll when modal is open */
 body.modal-open {
     overflow: hidden;
-    padding-right: 15px; /* Prevent layout shift when scrollbar disappears */
+    padding-right: 15px;
+    /* Prevent layout shift when scrollbar disappears */
+}
+
+
+#regEmail {
+    margin-bottom: 20px;
 }

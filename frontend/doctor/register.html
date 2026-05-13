@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Registration - MediConnect</title>
     <link rel="stylesheet" href="/style.css">
 </head>
+
 <body>
-    <div id="header-placeholder"></div>
+
 
     <div class="page-wrapper">
         <div class="container" style="max-width: 800px;">
@@ -23,28 +25,42 @@
                     <form id="emailForm" onsubmit="sendDoctorOtp(event)">
                         <div class="form-group">
                             <label class="form-label">Email Address <span class="required">*</span></label>
-                            <input type="email" class="form-input" id="regEmail" name="email" placeholder="you@email.com" required>
+                            <input type="email" class="form-input" id="regEmail" name="email"
+                                placeholder="you@email.com" required>
                         </div>
-                        <div style="margin-top: var(--space-6);">
+                        <div
+                            style="margin-top: var(--space-6); display: flex; flex-direction: column; gap: var(--space-3);">
                             <button type="submit" class="btn btn-primary btn-block" id="getOtpBtn">Get OTP</button>
+                            <a href="/index.html" class="btn btn-primary btn-block">Cancel</a>
                         </div>
                     </form>
                     <div style="margin-top: var(--space-6); text-align: center;">
-                        Already have an account? <a href="/doctor/login.html" style="color: var(--primary-600); font-weight: 600;">Login here</a>
+                        Already have an account? <a href="/doctor/login.html"
+                            style="color: var(--primary-600); font-weight: 600;">Login here</a>
                     </div>
                 </div>
 
                 <!-- STEP 2: OTP -->
                 <div id="otpSection" style="display: none; text-align:center; padding: var(--space-4);">
-                    <div style="width:72px;height:72px; background:var(--primary-50); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto var(--space-4);">
-                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--primary-600)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <div
+                        style="width:72px;height:72px; background:var(--primary-50); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto var(--space-4);">
+                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--primary-600)"
+                            stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                            <polyline points="22,6 12,13 2,6" />
+                        </svg>
                     </div>
-                    <h2 style="font-size:1.5rem; font-weight:700; color:var(--neutral-800); margin-bottom:var(--space-2);">Verify Your Email</h2>
-                    <p style="color:var(--neutral-500); margin-bottom:var(--space-6);">We sent a 6-digit OTP to <strong id="otpEmailDisplay"></strong></p>
+                    <h2
+                        style="font-size:1.5rem; font-weight:700; color:var(--neutral-800); margin-bottom:var(--space-2);">
+                        Verify Your Email</h2>
+                    <p style="color:var(--neutral-500); margin-bottom:var(--space-6);">We sent a 6-digit OTP to <strong
+                            id="otpEmailDisplay"></strong></p>
                     <div class="form-group" style="max-width:300px; margin:0 auto var(--space-6);">
-                        <input type="text" id="doctorOtpInput" class="form-input" placeholder="000000" maxlength="6" style="text-align:center; font-size:2rem; font-weight:700; letter-spacing:10px;" required>
+                        <input type="text" id="doctorOtpInput" class="form-input" placeholder="000000" maxlength="6"
+                            style="text-align:center; font-size:2rem; font-weight:700; letter-spacing:10px;" required>
                     </div>
-                    <button onclick="verifyDoctorOtp()" id="verifyDoctorBtn" class="btn btn-primary" style="min-width:200px;">Verify Email</button>
+                    <button onclick="verifyDoctorOtp()" id="verifyDoctorBtn" class="btn btn-primary"
+                        style="min-width:200px;">Verify Email</button>
                 </div>
 
                 <!-- STEP 3: DETAILS -->
@@ -76,37 +92,44 @@
 
                             <div class="form-group">
                                 <label class="form-label">Qualification</label>
-                                <input type="text" class="form-input" id="regQualification" name="qualification" placeholder="e.g. MBBS, MD">
+                                <input type="text" class="form-input" id="regQualification" name="qualification"
+                                    placeholder="e.g. MBBS, MD">
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label">Experience (Years)</label>
-                                <input type="number" class="form-input" id="regExperience" name="experience_years" value="0" min="0">
+                                <input type="number" class="form-input" id="regExperience" name="experience_years"
+                                    value="0" min="0">
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label">Phone Number <span class="required">*</span></label>
-                                <input type="tel" class="form-input" id="regPhone" name="phone" placeholder="+91 9876543210" required>
+                                <input type="tel" class="form-input" id="regPhone" name="phone"
+                                    placeholder="+91 9876543210" required>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label">Consultation Fee (₹) <span class="required">*</span></label>
-                                <input type="number" class="form-input" id="regFee" name="consultation_fee" placeholder="e.g. 500" min="0" step="0.01" required>
+                                <input type="number" class="form-input" id="regFee" name="consultation_fee"
+                                    placeholder="e.g. 500" min="0" step="0.01" required>
                             </div>
 
                             <div class="form-group" style="grid-column: 1 / -1;">
                                 <label class="form-label">Bio / About</label>
-                                <textarea class="form-input" id="regBio" name="bio" rows="3" placeholder="Brief professional summary..." style="resize: vertical;"></textarea>
+                                <textarea class="form-input" id="regBio" name="bio" rows="3"
+                                    placeholder="Brief professional summary..." style="resize: vertical;"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label">Upload License/Degree <span class="required">*</span></label>
-                                <input type="file" class="form-input" id="regDocument" name="document" accept=".pdf,.jpg,.png" required>
+                                <input type="file" class="form-input" id="regDocument" name="document"
+                                    accept=".pdf,.jpg,.png" required>
                             </div>
                         </div>
 
                         <div style="margin-top: var(--space-8);">
-                            <button type="submit" class="btn btn-primary btn-block" id="registerBtn">Complete Registration</button>
+                            <button type="submit" class="btn btn-primary btn-block" id="registerBtn">Complete
+                                Registration</button>
                         </div>
                     </form>
                 </div>
@@ -114,7 +137,7 @@
         </div>
     </div>
 
-    <div id="footer-placeholder"></div>
+
     <script src="/script.js"></script>
     <script>
         let registeredEmail = '';
@@ -127,7 +150,7 @@
                 data.specializations.forEach(s => {
                     specSelect.innerHTML += `<option value="${s.id}">${s.name}</option>`;
                 });
-            } catch (e) {}
+            } catch (e) { }
         });
 
         async function sendDoctorOtp(e) {
@@ -138,8 +161,8 @@
             btn.textContent = 'Sending...';
 
             try {
-                const response = await fetch('/api/auth/doctor/send-register-otp', { 
-                    method: 'POST', 
+                const response = await fetch('/api/auth/doctor/send-register-otp', {
+                    method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email })
                 });
@@ -202,4 +225,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -83,18 +83,26 @@ router.get('/:id/availability', async (req, res) => {
 // ============================================
 router.post('/:id/availability', async (req, res) => {
     try {
-        const { available_date, start_time, end_time, slot_duration } = req.body;
+        const { available_date, day_of_week, start_time, end_time, slot_duration, start_date, end_date } = req.body;
         const doctorId = req.params.id;
 
-        if (!available_date || !start_time || !end_time) {
-            return res.status(400).json({ error: 'Date, start time, and end time are required' });
+        if (!available_date && !day_of_week && !start_date && !end_date) {
+            return res.status(400).json({ error: 'Date, Day of week, or Date Range is required' });
+        }
+        if (!start_time || !end_time) {
+            return res.status(400).json({ error: 'Start time and end time are required' });
         }
 
+        // If a date range is provided, we usually want it to apply to all days in that range
+        // Unless we specifically want to support "Every Monday in this range", which the current UI doesn't do.
+        // For now, if start_date is set, we ensure day_of_week is null to avoid the "Monday only" bug.
+        const effectiveDayOfWeek = (start_date || end_date) ? null : (day_of_week || null);
+
         const [result] = await pool.query(
-            `INSERT INTO doctor_availability (doctor_id, available_date, start_time, end_time, slot_duration) 
-             VALUES (?, ?, ?, ?, ?) 
-             ON DUPLICATE KEY UPDATE start_time = VALUES(start_time), end_time = VALUES(end_time), slot_duration = VALUES(slot_duration)`,
-            [doctorId, available_date, start_time, end_time, slot_duration || 30]
+            `INSERT INTO doctor_availability (doctor_id, available_date, day_of_week, start_time, end_time, slot_duration, start_date, end_date) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?) 
+             ON DUPLICATE KEY UPDATE start_time = VALUES(start_time), end_time = VALUES(end_time), slot_duration = VALUES(slot_duration), start_date = VALUES(start_date), end_date = VALUES(end_date), day_of_week = VALUES(day_of_week)`,
+            [doctorId, available_date || null, effectiveDayOfWeek, start_time, end_time, slot_duration || 30, start_date || null, end_date || null]
         );
 
         res.json({ message: 'Availability updated successfully' });
@@ -115,18 +123,38 @@ router.get('/:id/slots', async (req, res) => {
 
         if (!date) return res.status(400).json({ error: 'Date is required' });
 
-        // Get doctor's availability for that date
-        const [availability] = await pool.query(
-            'SELECT start_time, end_time, slot_duration FROM doctor_availability WHERE doctor_id = ? AND available_date = ?',
-            [doctorId, date]
+        // Get doctor's availability for that date or date range/weekly day
+        const [availabilities] = await pool.query(
+            `SELECT start_time, end_time, slot_duration 
+             FROM doctor_availability 
+             WHERE doctor_id = ? 
+             AND (available_date = ? OR (available_date IS NULL 
+                  AND (day_of_week = DAYNAME(?) OR day_of_week IS NULL)
+                  AND (? >= start_date OR start_date IS NULL) 
+                  AND (? <= end_date OR end_date IS NULL)))
+             ORDER BY start_time ASC`,
+            [doctorId, date, date, date, date]
         );
 
-        if (availability.length === 0) {
+        if (availabilities.length === 0) {
             return res.json({ slots: [] });
         }
 
-        const { start_time, end_time, slot_duration } = availability[0];
-        const allSlots = generateSlots(start_time, end_time, slot_duration);
+        let allGeneratedSlots = [];
+        for (const avail of availabilities) {
+            const blockSlots = generateSlots(avail.start_time, avail.end_time, avail.slot_duration);
+            allGeneratedSlots = [...allGeneratedSlots, ...blockSlots];
+        }
+
+        // Sort all generated slots by time
+        allGeneratedSlots.sort((a, b) => {
+            const tA = new Date(`1970-01-01 ${a}`).getTime();
+            const tB = new Date(`1970-01-01 ${b}`).getTime();
+            return tA - tB;
+        });
+
+        // Deduplicate slots
+        const uniqueSlots = [...new Set(allGeneratedSlots)];
 
         // Get already booked appointments for that doctor on that date
         const [booked] = await pool.query(
@@ -135,7 +163,7 @@ router.get('/:id/slots', async (req, res) => {
         );
 
         const bookedSlots = booked.map(b => b.time_slot);
-        const availableSlots = allSlots.filter(slot => !bookedSlots.includes(slot));
+        const availableSlots = uniqueSlots.filter(slot => !bookedSlots.includes(slot));
 
         res.json({ slots: availableSlots });
 
