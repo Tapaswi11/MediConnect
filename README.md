@@ -113,7 +113,6 @@ Visit: **http://localhost:3000**
 | Admin  | admin@mediconnect.com    | admin123   |
 | Doctor | emilia@mediconnect.com   | doctor123  |
 | Doctor | james@mediconnect.com    | doctor123  |
-| Doctor | pkandrikar11@gmail.com   | tappu11    |
 
 ---
 
